@@ -161,36 +161,13 @@ Provider: NASA Ames Prognostics Center of Excellence
 
 ---
 
-### Comparative / Control Datasets
-
-**PHM Society Data Challenge Datasets**
-Provider: PHM Society
-
-* Industrial and aerospace-adjacent predictive maintenance datasets
-* Time series with event annotations
-
-**Role in FusionCore**
-
-* Cross-domain validation
-* Generalisation testing of FusionCore architecture
-
----
-
 ## Dataset Download Instructions & URLs
 
 ### NASA C-MAPSS (Primary Dataset)
 
-* NASA PCoE Data Repository:
-  [https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/](https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/)
+* [NASA PCoE Data Repository:](https://data.nasa.gov/dataset/cmapss-jet-engine-simulated-data)
 
 Download the appropriate `FD00x` dataset archive and place it in the `raw/` directory.
-
----
-
-### PHM Society Data Challenge
-
-* Data repository:
-  [https://www.phmsociety.org/competition/data-challenge/](https://www.phmsociety.org/competition/data-challenge/)
 
 ---
 

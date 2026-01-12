@@ -1,45 +1,210 @@
-# $\text{Fusion}_{3,3} \text{ Industrial AI}$
+<img width="1860" height="417" alt="AX-FC" src="https://github.com/user-attachments/assets/1e6cf905-6252-4c59-8e3e-eed19502efcb" />
 
-Project $F_{3,3}$: Redefining Industrial Reliability via Multi-modal Fusion. This framework bridges the "Trust Gap" by fusing structured telemetry, environmental context, and unstructured logs. Built on a distributed PySpark architecture with Temporal Fusion Transformers, it targets a 70% reduction in downtime to protect enterprise EBIT margins.
+# FusionCore
 
----
+**FusionCore** is an end-to-end temporal intelligence pipeline designed to ingest, fuse, and analyse heterogeneous time-series datasets at scale, with a primary focus on predictive maintenance and system health forecasting for space and aerospace systems.
 
-# Project : $F_{3,3}$ Multi-modal Industrial Reliability Framework
+FusionCore integrates data ingestion, temporal harmonisation, feature construction, and sequence-based time-series modelling into a single, reproducible workflow. The reference modelling implementation uses a **Temporal Fusion Transformer (TFT)** to validate the integrity and usefulness of the fused datasets.
 
-## 📌 Overview
-
-**Project $F_{3,3}$** is an end-to-end Industrial AI framework designed to bridge the "Trust Gap" between predictive models and the factory floor. By moving beyond isolated sensor data,  synthesises three distinct data streams to deliver interpretable, production-grade **Remaining Useful Life ()** forecasts.
-
-The framework is architected to transform maintenance from a volatile **Operating Expense (OpEx)** into a predictable driver of **EBIT stability**.
+The project is intentionally foundational. Each version builds upon the previous one, enabling the progressive development of more advanced AI technologies for space exploration, including long-duration missions, lunar and Martian operations, and future asteroid mining systems.
 
 ---
 
-## 🏗 The "Power of Three" Architecture
+## Architecture Overview
 
-### 1. Data Fusion (Inputs)
+FusionCore is implemented as a **layered, end-to-end temporal intelligence system**.
 
-The model synthesises three high-variance data sources to eliminate the "blind spots" of traditional telemetry:
+### 1. Ingestion Layer (Raw / Bronze)
 
-* **Structured Telemetry:** Multi-sensor time-series (NASA C-MAPSS) capturing mechanical degradation trends.
-* **Environmental Context:** External stressors including ambient temperature, humidity, and atmospheric pressure.
-* **Unstructured Logs:** Natural Language Processing (NLP) of technician maintenance records to capture "human-in-the-loop" observations and historical anomalies.
+* Batch ingestion of heterogeneous datasets (time series, events, metadata)
+* Immutable preservation of raw source data
+* Capture of provenance, ingestion timestamps, and dataset versions
+* Support for CSV, Parquet, and JSON formats
 
-### 2. Predictive Intelligence (Engine)
-
-* **Distributed ETL:** Built on **PySpark** using Adaptive Query Execution (AQE) to manage data skewness and "As-Of" joins at scale.
-* **Advanced Modelling:** Utilises **Temporal Fusion Transformers (TFT)** for multi-horizon forecasting, providing probabilistic outputs and interpretable attention weights.
-
-### 3. Enterprise MLOps (Deployment)
-
-* **Infrastructure as Code (IaC):** Automated environment provisioning and cloud resource management via **Terraform**.
-* **Operational Resiliency:** Designed for high-availability production environments with integrated drift detection and automated model monitoring.
+**Output:** Source-faithful raw datasets with no silent transformations.
 
 ---
 
-## 📈 Strategic Business Impact
+### 2. Harmonisation & Quality Layer (Silver)
 
-$F_{3,3}$ is calibrated against industry benchmarks to deliver quantifiable financial results and operational excellence:
+* Schema validation and schema versioning
+* Data quality checks (nulls, ranges, duplicates)
+* Canonical identifier mapping (e.g. asset or engine identifiers)
+* Temporal standardisation to a canonical time index
+* Explicit handling of gaps and irregular sampling
 
-* **-70% Unscheduled Downtime:** Converting reactive emergency repairs into strategically planned maintenance windows.
-* **+20% Asset Longevity:** Optimising machine duty cycles based on real-time health scores to extend the lifecycle of capital equipment.
-* **EBIT Protection:** De-risking quarterly earnings by stabilising maintenance OpEx and reducing the variance in production output.
+**Output:** Clean, standardised, temporally consistent datasets.
+
+---
+
+### 3. Fusion & Feature Layer (Gold)
+
+* Multi-source temporal alignment using entity keys and time
+* Anchor time-series designation
+* Construction of model-ready features:
+
+  * Time-varying observed covariates
+  * Time-varying known covariates
+  * Optional static attributes
+* Label generation for degradation modelling (e.g. Remaining Useful Life)
+
+**Output:** Analysis-ready fused datasets suitable for sequence-based modelling.
+
+---
+
+### 4. Modelling Layer (Temporal Fusion Transformer)
+
+* Offline training of a Temporal Fusion Transformer (TFT)
+* Grouped sequence modelling (per asset or system)
+* Encoder–decoder temporal windows
+* Strict prevention of temporal leakage
+* Baseline configuration used for validation, not hyper-optimisation
+
+**Output:** Predictive degradation forecasts and model diagnostics.
+
+---
+
+### 5. Evaluation & Reproducibility Layer
+
+* Baseline forecasting metrics (e.g. MAE, RMSE)
+* Stability checks across repeated runs
+* Full traceability to dataset versions, schemas, and model configurations
+
+---
+
+## Data Lineage & Versioning
+
+FusionCore enforces **explicit data lineage and version control** at every stage of the pipeline.
+
+* **Raw (Bronze):**
+  Immutable snapshots of source datasets with ingestion timestamps and dataset identifiers.
+
+* **Clean (Silver):**
+  Versioned schemas and validated records; no destructive overwrites.
+
+* **Fused (Gold):**
+  Deterministic outputs tagged with:
+
+  * Dataset version
+  * Schema version
+  * Configuration hash
+  * Execution timestamp
+
+All downstream modelling artefacts reference the exact FusionCore dataset version used for training, ensuring full reproducibility.
+
+---
+
+## Model Configuration Summary (TFT)
+
+FusionCore v0 includes a **reference Temporal Fusion Transformer configuration** used to validate fused datasets.
+
+### Purpose
+
+To confirm that FusionCore outputs are structurally and temporally compatible with advanced sequence-based models used in system health and degradation analysis.
+
+### Baseline Configuration
+
+* Model type: Temporal Fusion Transformer
+* Framework: PyTorch Forecasting
+* Task: Regression (Remaining Useful Life)
+* Group identifier: `asset_id` / `engine_id`
+* Time index: `cycle` or canonical timestamp
+* Encoder window: 30–50 timesteps
+* Prediction horizon: 1 timestep (baseline)
+* Normalisation: Group-wise (per entity)
+* Loss function: MAE or RMSE
+
+### Scope Constraints
+
+* Offline training only
+* No real-time inference
+* No hyperparameter optimisation beyond baseline
+* Model accuracy is not a v0 acceptance criterion
+
+---
+
+## Datasets
+
+FusionCore v0 uses **public, well-documented datasets from leading aerospace research organisations**, ensuring relevance to space-adjacent systems and long-term mission reliability.
+
+### Primary Dataset (Anchor Time Series)
+
+**NASA Turbofan Engine Degradation Dataset (C-MAPSS)**
+Provider: NASA Ames Prognostics Center of Excellence
+
+* Multivariate run-to-failure time series
+* Multiple sensor channels per engine
+* Explicit degradation trajectories
+* Widely used benchmark in prognostics research
+
+**Role in FusionCore**
+
+* Anchor time series
+* Primary source for temporal fusion and modelling
+* Remaining Useful Life (RUL) target generation
+
+---
+
+### Event & Label Data
+
+**Failure and Degradation Annotations (C-MAPSS)**
+Provider: NASA Ames Prognostics Center of Excellence
+
+* End-of-life indicators
+* Failure cycle annotations
+
+**Role in FusionCore**
+
+* Event alignment
+* Supervised learning targets
+* Temporal integrity validation
+
+---
+
+### Comparative / Control Datasets
+
+**PHM Society Data Challenge Datasets**
+Provider: PHM Society
+
+* Industrial and aerospace-adjacent predictive maintenance datasets
+* Time series with event annotations
+
+**Role in FusionCore**
+
+* Cross-domain validation
+* Generalisation testing of FusionCore architecture
+
+---
+
+## Dataset Download Instructions & URLs
+
+### NASA C-MAPSS (Primary Dataset)
+
+* NASA PCoE Data Repository:
+  [https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/](https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/)
+
+Download the appropriate `FD00x` dataset archive and place it in the `raw/` directory.
+
+---
+
+### PHM Society Data Challenge
+
+* Data repository:
+  [https://www.phmsociety.org/competition/data-challenge/](https://www.phmsociety.org/competition/data-challenge/)
+
+---
+
+## Scope (v0)
+
+FusionCore v0 is an **offline, experimental research system**.
+It is **not** a production platform and does not provide real-time inference or automated decision-making.
+
+---
+
+## Long-Term Vision
+
+FusionCore is the foundational intelligence layer for **Astrolytics Xplorion**.
+Future systems will extend this core to support increasingly autonomous, resilient AI technologies for space exploration—from Earth orbit to the Moon, Mars, and future asteroid mining operations.
+
+---
+

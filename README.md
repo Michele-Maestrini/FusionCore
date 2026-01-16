@@ -75,7 +75,7 @@ FusionCore v0 is deliberately scoped to a **single canonical dataset** to mainta
 
 ### Primary Dataset
 
-* **NASA C‑MAPSS Turbofan Engine Degradation Dataset**
+* **[NASA C‑MAPSS Turbofan Engine Degradation Dataset](https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/)**
 * Multivariate run‑to‑failure time series
 * Explicit Remaining Useful Life (RUL) ground truth
 * Widely accepted benchmark in prognostics research

@@ -85,8 +85,3 @@ Future versions will extend into probabilistic modelling, multi-dataset learning
 
 ---
 
-## Status
-
-Active research benchmark.
-Findings are expected to evolve.
----

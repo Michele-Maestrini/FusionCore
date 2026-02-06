@@ -59,7 +59,6 @@ We benchmark three SOTA paradigms to cover the "Startup Value Triangle" of Speed
 FusionCore/
 ├── docs/                  # Technical deep-dives and PDF reports
 │   ├── technical_report_v0.pdf
-│   └── benchmarking_protocols.pdf
 ├── notebooks/             # Exploratory Data Analysis & Experiments
 │   ├── 01_EDA_Diagnostics.ipynb    # Initial sensor analysis
 │   ├── 02_EDA_Regimes.ipynb        # Stationarity & Regime math (The "Missing Maths")
@@ -100,10 +99,9 @@ jupyter notebook notebooks/02_EDA_Regimes.ipynb
 
 ## 8. Author
 
-**[Your Name]**
+**Michele Maestrini**
 *MSc Data Science | Specialising in Aerospace Predictive Maintenance*
-[Link to your Portfolio/LinkedIn]
+
+[LinkedIn](www.linkedin.com/in/michele-maestrini)
 
 ---
-
-**Next Step:** Once you have saved this file, we should generate the **Python Code** for `notebooks/02_EDA_Regimes.ipynb` to fill the "Missing Maths" gap mentioned in Section 4. **Shall I generate that code now?**

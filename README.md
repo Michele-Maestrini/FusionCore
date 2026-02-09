@@ -1,55 +1,50 @@
 <img width="273" height="121" alt="FusionCore" src="https://github.com/user-attachments/assets/692079cc-0f95-4386-bf88-2256625293c6" />
 
-
 # FusionCore: Risk-Aware Predictive Maintenance System
 
-**FusionCore** is a research-led benchmarking framework designed to solve the "Cold Start" and "Regime Shift" problems in aerospace prognostics. Unlike standard RUL regressors, FusionCore evaluates the trade-off between **Model Explainability** (TFT) and **Inference Latency** (TSMixer) to determine the optimal deployment architecture for edge-constrained environments.
+**FusionCore** is a research-led framework designed to solve the "Structural Leakage" and "Uncertainty Quantification" problems in aerospace prognostics. Moving beyond standard regression, FusionCore implements a **Forensic Validation Gate** to ensure Remaining Useful Life (RUL) estimations are driven by physical degradation signals rather than temporal metadata artefacts.
 
 ---
 
 ## 1. Executive Summary
 
-Predictive maintenance in safety-critical domains (Aerospace, Space) requires more than just low RMSE. It demands **reliability under regime shift** and **interpretability for human engineers**.
+Predictive maintenance in safety-critical domains (Aerospace) demands more than just low RMSE; it requires **statistical honesty** and **quantifiable risk**. 
 
-FusionCore v0 establishes a rigorous "Ground Truth" by benchmarking three distinct architectural paradigms against the NASA CMAPSS Gold Standard. The goal is not just to predict failure, but to de-risk the architectural decision-making process for future industrial deployment.
+FusionCore v0 establishes a rigorous "Ground Truth" by subjecting State-of-the-Art (SOTA) architectures to forensic stress testing against the NASA CMAPSS dataset. The framework evaluates the trade-off between **Probabilistic Risk Assessment** (DeepAR), **Attention-Based Interpretability** (TFT), and **Local Semantic Pattern Recognition** (PatchTST).
 
 ---
 
-## 2. The Problem
+## 2. The Problem: "Temporal Cheating" & Regime Blindness
 
-Standard deep learning models often fail in real-world industrial settings due to two critical blind spots:
+Standard deep learning models often exhibit "too-good-to-be-true" performance in research settings due to two critical flaws:
 
-1. **Non-Stationarity:** Sensor data drifts over time independent of faults (e.g., sensor aging vs component aging).
-2. **Regime Blindness:** Models mistake high-altitude cruise conditions for engine failure because they lack context-aware normalisation.
+1. **Structural Temporal Leakage:** Models often learn to "count down" using internal data indices rather than interpreting sensor physics. FusionCore identifies and remediates this through a **Forensic Stress Test**.
+2. **Non-Stationarity:** Models mistake high-altitude cruise conditions for engine failure because they lack context-aware normalisation.
 
 **The FusionCore Hypothesis:**
-
-> *A physics-informed hybrid architecture that explicitly models operating regimes will outperform "black box" Deep Learning models in false-positive rates, even if RMSE is similar.*
+> *A physics-aware architecture that prioritises kinematic derivatives (Deltas and Rolling Means) over raw temporal sequences will demonstrate superior reliability under anomalous sensor failure, even if traditional metrics (MAE) appear higher.*
 
 ---
 
 ## 3. The Solution (FusionCore v0)
 
-We benchmark three SOTA paradigms to cover the "Startup Value Triangle" of Speed, Accuracy, and Simplicity.
+We benchmark three SOTA paradigms to solve the "Reliability Triangle" of Risk, Clarity, and Pattern Recognition.
 
 | Architecture | Role | Why This Model? |
 | --- | --- | --- |
-| **AutoGluon (TimeSeries)** | **The Baseline** | An automated ensemble of statistical (ARIMA/ETS) and tree-based models. Acts as the "sanity check"—if Deep Learning cannot beat this, it is not worth deploying. |
-| **Temporal Fusion Transformer (TFT)** | **The Glass Box** | An attention-based architecture that offers **interpretability**. It allows us to visualise exactly which sensors the model focuses on as the engine degrades. |
-| **TSMixer (Google)** | **The Speed King** | An all-MLP architecture that offers comparable accuracy to Transformers but with significantly lower **inference latency**, making it ideal for embedded/edge deployment. |
+| **DeepAR (Probabilistic)** | **The Risk Estimator** | Produces a probability distribution for RUL. Essential for calculating the **Probability of Failure (PoF)** rather than just a point estimate. |
+| **Temporal Fusion Transformer (TFT)** | **The Glass Box** | Utilises **Variable Selection Networks** to provide interpretability, allowing engineers to audit which sensors drive the model's decisions. |
+| **PatchTST (Transformer)** | **The Pattern Recogniser** | Segments time-series into semantic "patches" to capture local degradation trends whilst ignoring high-frequency sensor noise. |
 
 ---
 
 ## 4. Key Results (Phase 0 Diagnostics)
 
-*Prior to training, our extensive EDA (see `docs/technical_report_v0.pdf`) revealed:*
+*Prior to benchmarking, our Forensic Audit (see `notebooks/04_Forensic_Stress_Test.ipynb`) revealed:*
 
-* **Regime Shift:** In dataset FD002, engines cycle through 6 distinct operating clusters. Random splitting results in **Data Leakage**.
-* *Mitigation:* Implemented strict **Unit-Wise Splitting** protocols.
-
-
-* **Sensor Redundancy:** Sensors 1, 5, 10, 16, 18, and 19 exhibit zero variance and are removed to improve Signal-to-Noise Ratio (SNR).
-* **Stationarity:** Sensors T24 (LPC Temp) and T30 (HPC Temp) exhibit non-stationary trends that correlate with RUL, validating their use as primary features.
+* **Leakage Detection:** Identified that default Time-Series models achieved $10^{-9}$ MAE by "cheating" via temporal indices.
+* **Remediation:** Established an **Honest Baseline (2.28 MAE)** using shuffled tabular regression and kinematic feature engineering.
+* **Anomaly Sensitivity:** Validated that the physics-aware model reacts to synthetic sensor spikes with an immediate RUL reduction (17.26 cycles), whereas "Black Box" models ignore the fault.
 
 ---
 
@@ -58,50 +53,28 @@ We benchmark three SOTA paradigms to cover the "Startup Value Triangle" of Speed
 ```text
 FusionCore/
 ├── docs/                  # Technical deep-dives and PDF reports
-│   ├── technical_report_v0.pdf
-├── notebooks/             # Exploratory Data Analysis & Experiments
-│   ├── 01_EDA_Diagnostics.ipynb    # Initial sensor analysis
-│   ├── 02_EDA_Regimes.ipynb        # Stationarity & Regime math (The "Missing Maths")
-│   └── 03_Benchmark_Comparison.ipynb
+│   └── technical_report_v0.pdf
+├── notebooks/             # Exploratory Data Analysis & Stress Testing
+│   ├── 01_EDA_Diagnostics.ipynb       # Initial sensor analysis
+│   ├── 02_EDA_Regimes.ipynb           # Stationarity & Regime mathematics
+│   ├── 04_Forensic_Stress_Test.ipynb  # Leakage audit & Anomaly injection
+│   └── 05_SOTA_Benchmarking.ipynb     # DeepAR, TFT, and PatchTST
 ├── src/                   # Modular source code
-│   ├── data/              # Data loaders and regime-normalisation logic
-│   └── models/            # TFT, TSMixer, and AutoGluon definitions
+│   ├── data/              # Kinematic feature engineering & v1_physics logic
+│   └── models/            # DeepAR, TFT, and PatchTST definitions
 ├── requirements.txt       # Python dependencies
 └── README.md              # This file
-
 ```
 
 ---
+## 6. Author
 
-## 6. Usage
 
-To reproduce the regime analysis:
-
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Run the Regime Diagnostics
-jupyter notebook notebooks/02_EDA_Regimes.ipynb
-
-```
-
----
-
-## 7. Roadmap
-
-* **Phase 0 (Current):** SOTA Benchmarking & Diagnostic EDA.
-* **Phase 1:** Physics-Informed Hybridisation (Injecting Thermodynamic Ratios).
-* **Phase 2:** Scaling to N-CMAPSS (2021) using PySpark/BigQuery.
-* **Phase 3:** **FusionScale** – Agentic AI & RAG for automated maintenance prescriptions.
-
----
-
-## 8. Author
 
 **Michele Maestrini**
-*MSc Data Science | Specialising in Aerospace Predictive Maintenance*
+
+*Data Science | Specialising in Aerospace Predictive Maintenance | Time-Series Analysis*
+
+
 
 [LinkedIn](www.linkedin.com/in/michele-maestrini)
-
----
